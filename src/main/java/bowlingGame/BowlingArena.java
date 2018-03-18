@@ -29,8 +29,8 @@ public class BowlingArena {
 		return ret;
 	}
 
-	public void roll(String string) {
-		BitSet rolledPins = PinsArrangementFactory.getBitSet(string);
+	public void removePins(String string) {
+		BitSet rolledPins = BitSetHelper.getBitSet(string);
 		roll(rolledPins);
 	}
 	

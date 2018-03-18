@@ -1,27 +1,28 @@
 package bowlingGame;
 
-import java.util.BitSet;
+import gameStates.NonLastFrameFirstRoll;
 
 public class Game {
 	
-	GameState gameState = new NonLastFrameFirstRoll(this);
-	BowlingArena arena = new BowlingArena();
-	Scorer scorer = new Scorer();
-	int frameNumber = 0;
-	int rollNumber = 0;
-	boolean extraBallEnabled = false;
+	private GameState gameState = new NonLastFrameFirstRoll(this);
+	private BowlingArena arena = new BowlingArena();
+	private Scorer scorer = new Scorer();
+	private int frameNumber = 0;
+	private int rollNumber = 0;
+	private boolean extraBallEnabled = false;
 
 	public int getScore() {
 		return scorer.getScore();
 	}
 
 	public void roll(String string) throws IllegalArgumentException {
-		arena.roll(string);
+		arena.removePins(string);
 		int nBallsRolled = string.length();
 		gameState.updateScore(nBallsRolled);
 		gameState.changeGameState();
 	}
 	
+	//getters and setters
 	public void setFrameNumber(int frameNumber) {
 		this.frameNumber = frameNumber;
 	}
@@ -41,6 +42,14 @@ public class Game {
 	public BowlingArena getBowlingArena() {
 		return arena;
 	}
+	
+	public Scorer getScorer() {
+		return scorer;
+	}
+	
+	public void setBowlingArena(BowlingArena arena) {
+		this.arena = arena;
+	}
 
 	public void setGameState(GameState gameState) {
 		this.gameState = gameState;
@@ -50,8 +59,8 @@ public class Game {
 		extraBallEnabled = true;
 	}
 	
-	public int[] getPreviousLocation(int[] location) {
-		return scorer.getPreviousLocation(location);
+	public boolean isExtraBallEnabled() {
+		return extraBallEnabled;
 	}
 
 }

@@ -18,7 +18,7 @@ public class BowlingArenaTest {
 	@Test
 	public void testRolling() {
 		BowlingArena arena = new BowlingArena();
-		arena.roll("1234");
+		arena.removePins("1234");
 		assertEquals("056789", arena.getStandingPinsAsString());
 	}
 

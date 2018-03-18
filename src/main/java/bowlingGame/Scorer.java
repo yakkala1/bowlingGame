@@ -8,37 +8,33 @@ public class Scorer {
 		return scorecard.computeScore();
 	}
 
-	public void insertScore(int frameNumber, int rollNumber,int nBallsRolled) {
+	public void updateScoreAndRespectiveBonuses(int frameNumber, int rollNumber,int nBallsRolled) {
 		scorecard.setScore(frameNumber, rollNumber, nBallsRolled);
-		
-		int[] previousLocation = scorecard.getPreviousLocation(new int[]{frameNumber, rollNumber});
-		if(previousLocation == null)
+	
+		int[] previousFrameAndRoll = scorecard.getPreviousFrameAndRoll(new int[]{frameNumber, rollNumber});
+		if(previousFrameAndRoll == null)
 			return;
-		int previousFrame = previousLocation[0];
-		int previousRoll = previousLocation[1];
-		if( scorecard.getValue(previousFrame,previousRoll,1)==Scorecard.UPDATE_BONUS )
+		int previousFrame = previousFrameAndRoll[0];
+		int previousRoll = previousFrameAndRoll[1];
+		if( scorecard.getFirstBonus(previousFrame,previousRoll) == Scorecard.TO_BE_UPDATED )
 			scorecard.setFirstBonus(previousFrame, previousRoll, nBallsRolled);
 		
-		int[] doublePreviousLocation = scorecard.getPreviousLocation(previousLocation);
-		if(doublePreviousLocation == null)
+		int[] doublePreviousFrameAndRoll = scorecard.getPreviousFrameAndRoll(previousFrameAndRoll);
+		if(doublePreviousFrameAndRoll == null)
 			return;
-		int doublePreviousFrame = doublePreviousLocation[0];
-		int doublePreviousRoll = doublePreviousLocation[1];
-		if( scorecard.getValue(doublePreviousFrame, doublePreviousRoll, 2) == Scorecard.UPDATE_BONUS )
+		int doublePreviousFrame = doublePreviousFrameAndRoll[0];
+		int doublePreviousRoll = doublePreviousFrameAndRoll[1];
+		if( scorecard.getSecondBonus(doublePreviousFrame, doublePreviousRoll) == Scorecard.TO_BE_UPDATED )
 			scorecard.setSecondBonus(doublePreviousFrame, doublePreviousRoll, nBallsRolled);
 	}
 
 	public void setSpare(int frameNumber, int rollNumber) {
-		scorecard.setFirstBonus(frameNumber, rollNumber, Scorecard.UPDATE_BONUS);
+		scorecard.setFirstBonus(frameNumber, rollNumber, Scorecard.TO_BE_UPDATED);
 	}
 
 	public void setStrike(int frameNumber, int rollNumber) {
-		scorecard.setFirstBonus(frameNumber, rollNumber, Scorecard.UPDATE_BONUS);
-		scorecard.setSecondBonus(frameNumber, rollNumber, Scorecard.UPDATE_BONUS);
+		scorecard.setFirstBonus(frameNumber, rollNumber, Scorecard.TO_BE_UPDATED);
+		scorecard.setSecondBonus(frameNumber, rollNumber, Scorecard.TO_BE_UPDATED);
 	}
 
-	public int[] getPreviousLocation(int[] location) {
-		return scorecard.getPreviousLocation(location);
-	}
-	
 }

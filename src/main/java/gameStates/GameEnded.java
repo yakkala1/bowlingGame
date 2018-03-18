@@ -1,4 +1,7 @@
-package bowlingGame;
+package gameStates;
+
+import bowlingGame.Game;
+import bowlingGame.GameState;
 
 public class GameEnded extends GameState {
 

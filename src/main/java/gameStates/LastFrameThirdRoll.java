@@ -1,4 +1,7 @@
-package bowlingGame;
+package gameStates;
+
+import bowlingGame.Game;
+import bowlingGame.GameState;
 
 public class LastFrameThirdRoll extends GameState {
 
@@ -8,12 +11,12 @@ public class LastFrameThirdRoll extends GameState {
 
 	@Override
 	public void changeGameState() {
-		game.setGameState(new GameEnded(game));
+		setGameState(new GameEnded(game));
 	}
 
 	@Override
 	public void updateScore(int nBallsRolled) {
-		game.scorer.insertScore(game.frameNumber, game.rollNumber, nBallsRolled);
+		getGameScorer().updateScoreAndRespectiveBonuses(getFrameNumber(), getRollNumber(), nBallsRolled);
 	}
 
 }

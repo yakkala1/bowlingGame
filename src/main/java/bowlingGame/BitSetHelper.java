@@ -2,7 +2,7 @@ package bowlingGame;
 
 import java.util.BitSet;
 
-public class PinsArrangementFactory {
+public class BitSetHelper {
 
 	public static BitSet getBitSet(String str) {
 		try {

@@ -2,12 +2,16 @@ package bowlingGame;
 
 public class Scorecard {
 	
-	int[][] array;
+	int[][] array = new int[3][21];
+	//21 columns one for each roll
+	//row 0 for storing score for that roll without bonus
+	//row 1 for storing first bonus
+	//row 2 for storing second bonus
+	
 	static int NULL_SCORE = -1;
-	static int UPDATE_BONUS = -2;
+	static int TO_BE_UPDATED = -2;
 	
 	public Scorecard() {
-		array = new int[3][21];
 		initializeToNullScore();
 	}
 
@@ -46,7 +50,7 @@ public class Scorecard {
 		int totalScore = 0;
 		for(int[] row : array) {
 			for(int score : row) {
-				if(score!=NULL_SCORE && score!=UPDATE_BONUS) {
+				if(score!=NULL_SCORE && score!=TO_BE_UPDATED) {
 					totalScore += score;
 				}
 			}
@@ -54,9 +58,9 @@ public class Scorecard {
 		return totalScore;
 	}
 
-	public int[] getPreviousLocation(int[] location) {
-		int frameNumber = location[0];
-		int rollNumber = location[1];
+	public int[] getPreviousFrameAndRoll(int[] frameAndRoll) {
+		int frameNumber = frameAndRoll[0];
+		int rollNumber = frameAndRoll[1];
 		int column = getColumn(frameNumber, rollNumber);
 		int returnColumn = column-1;
 		while(returnColumn>=0 && array[0][returnColumn]==NULL_SCORE) {
@@ -64,28 +68,37 @@ public class Scorecard {
 		}
 		if(returnColumn >= 0) {
 			int[] ret = new int[2];
-			ret[0] = getFrame(returnColumn);
-			ret[1] = getRoll(returnColumn);
+			ret[0] = getFrameFromColumn(returnColumn);
+			ret[1] = getRollFromColumn(returnColumn);
 			return ret;
 		} else 
 			return null;
 	}
-
-	private int getRoll(int returnColumn) {
+	
+	public int getFirstBonus(int frame, int roll) {
+		return getValue(frame, roll, 1);
+	}
+	
+	public int getSecondBonus(int frame, int roll) {
+		return getValue(frame, roll, 2);
+	}
+	
+	private int getRollFromColumn(int returnColumn) {
 		if(returnColumn == 21)
 			return 2;
 		return returnColumn%2;
 	}
 
-	private int getFrame(int returnColumn) {
+	private int getFrameFromColumn(int returnColumn) {
 		if(returnColumn == 21)
 			return 10;
 		return returnColumn/2;
 	}
 
-	public int getValue(int frame, int roll, int row) {
+	private int getValue(int frame, int roll, int row) {
 		int column = getColumn(frame, roll);
 		return array[row][column];
 	}
-	
+
+
 }
